@@ -28,7 +28,6 @@ public class BoxDrawingView extends View {
     public BoxDrawingView(Context context) {
         this(context,null);
     }
-
     public BoxDrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBoxPaint=new Paint();
@@ -36,21 +35,34 @@ public class BoxDrawingView extends View {
         mBackgroundPaint=new Paint();
         mBackgroundPaint.setColor(0xfff8efe0);
     }
-
+    private boolean isMultiTouchStart;
+    private float degress1;
+    private float rotation=0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         PointF current=new PointF(event.getX(),event.getY());
         String action="";
-        switch(event.getAction()){
+        switch(event.getActionMasked()){
             case MotionEvent.ACTION_DOWN:
-                action="ACTION_DOWN";;
+                action="ACTION_DOWN";
                 mCurrentBox=new Box(current);
                 mBoxen.add(mCurrentBox);
                 break;
             case MotionEvent.ACTION_MOVE:
                 action="ACTION_MOVE";
                 if(mCurrentBox!=null){
-                    mCurrentBox.setCurrent(current);
+                    if(event.getPointerCount()==1){
+                        mCurrentBox.setCurrent(current);
+                    }else if(event.getPointerCount()>1) {
+                        if(isMultiTouchStart){
+                            degress1=(float)(Math.atan((event.getY(1)-event.getY(0))/(event.getX(1)-event.getX(0)))/Math.PI*180);
+                            isMultiTouchStart=false;
+                        }else{
+                            float degress2=(float)(Math.atan((event.getY(1)-event.getY(0))/(event.getX(1)-event.getX(0)))/Math.PI*180);
+                            rotation=rotation+degress2-degress1;
+                            this.setRotation(rotation);
+                        }
+                    }
                     invalidate();
                 }
                 break;
@@ -61,6 +73,11 @@ public class BoxDrawingView extends View {
             case MotionEvent.ACTION_CANCEL:
                 action="ACTION_CANCEL";
                 mCurrentBox=null;
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                isMultiTouchStart=true;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
                 break;
         }
         Log.i(TAG,action+"at x="+current.x+", y="+current.y);
@@ -78,7 +95,6 @@ public class BoxDrawingView extends View {
             canvas.drawRect(left,top,right,bottom,mBoxPaint);
         }
     }
-
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle i=new Bundle();
@@ -89,7 +105,6 @@ public class BoxDrawingView extends View {
         onRestoreInstanceState(i);
         return i;
     }
-
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle i=(Bundle)state;
