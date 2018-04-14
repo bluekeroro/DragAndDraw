@@ -12,5 +12,4 @@
     * override onDraw() and onTouchEvent() methods.
 # Demo sreenshot:
 ![image](https://user-images.githubusercontent.com/25412051/38767890-fcd5eb32-401c-11e8-816e-22d83d908f6c.png)
-# Note:
 ![image](https://user-images.githubusercontent.com/25412051/38767907-543adbe4-401d-11e8-9bb3-b2b4cfcd2c62.png)
