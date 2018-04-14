@@ -10,6 +10,6 @@
 * This demo relates to
     * create a View class
     * override onDraw() and onTouchEvent() methods.
-# Demo sreenshot:
+# Demo screenshot:
 ![image](https://user-images.githubusercontent.com/25412051/38767890-fcd5eb32-401c-11e8-816e-22d83d908f6c.png)
 ![image](https://user-images.githubusercontent.com/25412051/38767907-543adbe4-401d-11e8-9bb3-b2b4cfcd2c62.png)
